@@ -18,6 +18,7 @@ namespace NEDAW.Controllers
         {
             _context = new ApplicationDbContext();
         }
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -32,12 +33,14 @@ namespace NEDAW.Controllers
 
         public ActionResult Edit(int id)
         {
-            var category = _context.NewsCategories
+            var result = _context.NewsCategories
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
 
-            if (category == null)
+            if (result == null)
                 return HttpNotFound();
+
+            var category = Mapper.Map<NewsCategory, NewsCategoryDtoForUpdate>(result);
 
             var newsCategoryForm = new NewsCategoryForm
             {
@@ -48,7 +51,7 @@ namespace NEDAW.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public ActionResult Save(NewsCategory newsCategory)
         {
             if (!ModelState.IsValid)

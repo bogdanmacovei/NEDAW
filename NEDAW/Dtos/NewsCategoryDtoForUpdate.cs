@@ -6,11 +6,8 @@ using System.Web;
 
 namespace NEDAW.Dtos
 {
-    public class NewsCategoryDto
+    public class NewsCategoryDtoForUpdate
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }

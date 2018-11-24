@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using NEDAW.Models;
 using NEDAW.Dtos;
-using NEDAW.ViewModels;
 
 namespace NEDAW.App_Start
 {
@@ -14,6 +9,7 @@ namespace NEDAW.App_Start
         public MappingProfile()
         {
             // CreateMap<source, destination>();
+            Mapper.CreateMap<NewsCategory, NewsCategoryDtoForUpdate>();
         }
     }
 }

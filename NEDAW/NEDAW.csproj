@@ -229,6 +229,7 @@
     <Compile Include="Models\NewsCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\NewsCategoryForm.cs" />
     <Compile Include="ViewModels\NewsCategoryVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +292,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

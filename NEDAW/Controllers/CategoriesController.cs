@@ -18,7 +18,7 @@ namespace NEDAW.Controllers
         {
             _context = new ApplicationDbContext();
         }
-        // GET: Categories
+        [HttpGet]
         public ActionResult Index()
         {
             var categories = _context.NewsCategories.ToList();
@@ -28,6 +28,45 @@ namespace NEDAW.Controllers
             };
 
             return View(categoriesVM);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var category = _context.NewsCategories
+                .Where(c => c.Id == id)
+                .FirstOrDefault();
+
+            if (category == null)
+                return HttpNotFound();
+
+            var newsCategoryForm = new NewsCategoryForm
+            {
+                Name = category.Name
+            };
+
+            return View(newsCategoryForm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(NewsCategory newsCategory)
+        {
+            if (!ModelState.IsValid)
+            {
+                var newsCategoryForm = new NewsCategoryForm
+                {
+                    Name = newsCategory.Name
+                };
+
+                return View("Edit", newsCategoryForm);
+            }
+
+            var categoryInDb = _context.NewsCategories.Single(c => c.Id == newsCategory.Id);
+            categoryInDb.Name = newsCategory.Name;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Categories");
         }
     }
 }

@@ -2,7 +2,9 @@
 
 <h2>All categories</h2>
 
-@foreach (var cateory in Model.NewsCategories)
+@foreach (var category in Model.NewsCategories)
 {
-    <p>@cateory.Name</p>
+    <p>@category.Name | 
+        <a href="/Categories/Edit/@category.Id">Edit category</a>
+    </p>
 }

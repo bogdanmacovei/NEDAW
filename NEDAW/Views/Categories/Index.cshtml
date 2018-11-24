@@ -1,0 +1,8 @@
+﻿@model NEDAW.ViewModels.NewsCategoryVM
+
+<h2>All categories</h2>
+
+@foreach (var cateory in Model.NewsCategories)
+{
+    <p>@cateory.Name</p>
+}

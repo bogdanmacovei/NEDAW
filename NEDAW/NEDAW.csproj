@@ -204,6 +204,10 @@
     <Compile Include="Migrations\201811241233066_InitialMigration.Designer.cs">
       <DependentUpon>201811241233066_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811241259567_AddingNewsAndNewsCategory.cs" />
+    <Compile Include="Migrations\201811241259567_AddingNewsAndNewsCategory.Designer.cs">
+      <DependentUpon>201811241259567_AddingNewsAndNewsCategory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -292,6 +296,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811241233066_InitialMigration.resx">
       <DependentUpon>201811241233066_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811241259567_AddingNewsAndNewsCategory.resx">
+      <DependentUpon>201811241259567_AddingNewsAndNewsCategory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

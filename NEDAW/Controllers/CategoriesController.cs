@@ -7,22 +7,23 @@ using System.Web.Mvc;
 using AutoMapper;
 using NEDAW.Dtos;
 using NEDAW.ViewModels;
+using System.Threading.Tasks;
 
 namespace NEDAW.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly NewsCategoriesRepository _repository;
 
         public CategoriesController()
         {
-            _context = new ApplicationDbContext();
+            _repository = new NewsCategoriesRepository();
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var categories = _context.NewsCategories.ToList();
+            var categories = await _repository.FindAll(); 
             var categoriesVM = new NewsCategoryVM
             {
                 NewsCategories = categories
@@ -31,11 +32,9 @@ namespace NEDAW.Controllers
             return View(categoriesVM);
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var result = _context.NewsCategories
-                .Where(c => c.Id == id)
-                .FirstOrDefault();
+            var result = await _repository.FindById(id);
 
             if (result == null)
                 return HttpNotFound();
@@ -52,7 +51,7 @@ namespace NEDAW.Controllers
 
         [HttpPost]
         // [ValidateAntiForgeryToken]
-        public ActionResult Save(NewsCategory newsCategory)
+        public async Task<ActionResult> Save(NewsCategory newsCategory)
         {
             if (!ModelState.IsValid)
             {
@@ -64,10 +63,10 @@ namespace NEDAW.Controllers
                 return View("Edit", newsCategoryForm);
             }
 
-            var categoryInDb = _context.NewsCategories.Single(c => c.Id == newsCategory.Id);
+            var categoryInDb = await _repository.FindById(newsCategory.Id);
             categoryInDb.Name = newsCategory.Name;
 
-            _context.SaveChanges();
+            _repository.SaveChanges();
 
             return RedirectToAction("Index", "Categories");
         }

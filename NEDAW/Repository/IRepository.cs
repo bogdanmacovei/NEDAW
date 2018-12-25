@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace NEDAW.Models
+namespace NEDAW.Repository
 {
     public interface IRepository<T> where T : class
     {

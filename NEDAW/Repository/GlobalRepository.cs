@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using NEDAW.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace NEDAW.Models
+namespace NEDAW.Repository
 {
     public class GlobalRepository<T> : IRepository<T>
         where T : class, IModel

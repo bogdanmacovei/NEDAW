@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NEDAW.Dtos;
 using NEDAW.Models;
+using NEDAW.Repository;
 using NEDAW.ViewModels;
 using System;
 using System.Collections.Generic;

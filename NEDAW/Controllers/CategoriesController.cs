@@ -8,6 +8,7 @@ using AutoMapper;
 using NEDAW.Dtos;
 using NEDAW.ViewModels;
 using System.Threading.Tasks;
+using NEDAW.Repository;
 
 namespace NEDAW.Controllers
 {

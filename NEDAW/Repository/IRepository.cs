@@ -12,8 +12,8 @@ namespace NEDAW.Models
         Task<IEnumerable<T>> FindAll();
         Task<IQueryable<T>> Find(Expression<Func<T, bool>> predicate);
         Task<T> FindById(int id);
-        void Add(T newEntity);
-        void Remove(T entity);
-        void SaveChanges();
+        Task Add(T newEntity);
+        Task Remove(T entity);
+        Task SaveChanges();
     }
 }

@@ -224,9 +224,10 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\News.cs" />
-    <Compile Include="Repository\NewsCategoriesRepository.cs" />
+    <Compile Include="Repository\GlobalRepository.cs" />
     <Compile Include="Models\NewsCategory.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

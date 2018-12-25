@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NEDAW.Models
 {
-    public class NewsCategory
+    public class NewsCategory : IModel
     {
         [Key]
         public int Id { get; set; }

@@ -13,11 +13,11 @@ namespace NEDAW.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly NewsCategoriesRepository _repository;
+        private readonly GlobalRepository<NewsCategory> _repository;
 
         public CategoriesController()
         {
-            _repository = new NewsCategoriesRepository();
+            _repository = new GlobalRepository<NewsCategory>();
         }
 
         [HttpGet]
@@ -50,7 +50,6 @@ namespace NEDAW.Controllers
         }
 
         [HttpPost]
-        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Save(NewsCategory newsCategory)
         {
             if (!ModelState.IsValid)
@@ -66,7 +65,7 @@ namespace NEDAW.Controllers
             var categoryInDb = await _repository.FindById(newsCategory.Id);
             categoryInDb.Name = newsCategory.Name;
 
-            _repository.SaveChanges();
+            await _repository.SaveChanges();
 
             return RedirectToAction("Index", "Categories");
         }

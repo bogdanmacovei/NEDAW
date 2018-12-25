@@ -205,7 +205,9 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Dtos\NewsCategoryDtoForUpdate.cs" />
+    <Compile Include="Dtos\NewsDtoForUpdate.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -234,6 +236,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\NewsCategoryForm.cs" />
     <Compile Include="ViewModels\NewsCategoryVM.cs" />
+    <Compile Include="ViewModels\NewsForm.cs" />
+    <Compile Include="ViewModels\NewsVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -299,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

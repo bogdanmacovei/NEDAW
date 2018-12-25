@@ -10,6 +10,7 @@ namespace NEDAW.App_Start
         {
             // CreateMap<source, destination>();
             Mapper.CreateMap<NewsCategory, NewsCategoryDtoForUpdate>();
+            Mapper.CreateMap<News, NewsDtoForUpdate>();
         }
     }
 }

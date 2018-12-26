@@ -1,0 +1,23 @@
+﻿@model NEDAW.ViewModels.NewsVM
+
+<h2>Last News</h2>
+
+@if (Model.News.Count() == 0)
+{
+    <p>There are no items!</p>
+}
+else
+{
+    foreach (var article in Model.News)
+    {
+        <h3>@article.Title | @article.NewsCategory.Name</h3>
+        <img src="@article.Image" />
+        <br /><br />
+        <p>@article.Content</p>
+        <a href="#">Read More</a>
+        <br />
+        <p>By @article.CreatedBy on @article.CreatedOn</p>
+        // nu vreau aici sa apara id-ul, ci numele
+        <hr />
+    }
+}

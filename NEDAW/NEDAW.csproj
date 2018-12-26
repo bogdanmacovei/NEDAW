@@ -223,6 +223,10 @@
     <Compile Include="Migrations\201811241327223_AddMockDataForNewsCategory.Designer.cs">
       <DependentUpon>201811241327223_AddMockDataForNewsCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812260742343_ChangeNewsModel.cs" />
+    <Compile Include="Migrations\201812260742343_ChangeNewsModel.Designer.cs">
+      <DependentUpon>201812260742343_ChangeNewsModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -300,10 +304,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -327,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811241327223_AddMockDataForNewsCategory.resx">
       <DependentUpon>201811241327223_AddMockDataForNewsCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812260742343_ChangeNewsModel.resx">
+      <DependentUpon>201812260742343_ChangeNewsModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

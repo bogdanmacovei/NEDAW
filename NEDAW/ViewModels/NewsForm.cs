@@ -25,7 +25,7 @@ namespace NEDAW.ViewModels
 
         public NewsCategory NewsCategory { get; set; }
 
-        public int ModifiedBy { get; set; }
+        public Guid ModifiedBy { get; set; }
 
         public DateTime ModifiedOn { get; set; }
     }

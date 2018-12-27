@@ -1,0 +1,35 @@
+﻿@model NEDAW.ViewModels.NewsForm
+
+<h2>@Model.ViewMode.ToString()</h2>
+
+@using (Html.BeginForm("Save", "News"))
+{
+    <div class="form-group">
+        @Html.LabelFor(c => c.Title)
+        <br />
+        @Html.TextBoxFor(c => c.Title)
+        <br />
+        @Html.ValidationMessageFor(c => c.Title)
+        <br />
+
+        @Html.LabelFor(c => c.Image)
+        <br />
+        @Html.TextBoxFor(c => c.Image)
+        <br />
+
+        @Html.LabelFor(c => c.Content)
+        <br />
+        @Html.TextAreaFor(c => c.Content)
+        <br />
+        @Html.ValidationMessageFor(c => c.Content)
+        <br />
+
+        @Html.LabelFor(c => c.NewsCategory)
+        <br />
+        @Html.DropDownListFor(c => c.NewsCategoryId, Model.Categories)
+        <br />
+    </div>
+    @Html.HiddenFor(c => c.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit">Save</button>
+}

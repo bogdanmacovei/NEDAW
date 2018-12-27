@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace NEDAW.Controllers
 {
@@ -31,16 +32,28 @@ namespace NEDAW.Controllers
         {
             // var news = await _repository.FindAll();
             // de modificat aici, sa nu ating contextul
-            var news = _context.News.Include("NewsCategory").ToList();
+            var news = _context.News.Include("NewsCategory").Include("User").ToList();
             // trebuie inclus .Include("User"), dar nu gasesc momentan
             // schema pentru el
 
-            var newsVM = new NewsVM
+             var newsVM = new NewsVM
             {
                 News = news
             };
 
             return View(newsVM);
+        }
+
+        public async Task<ActionResult> New()
+        {
+            var categoriesRepository = new GlobalRepository<NewsCategory>();
+            var categories = await categoriesRepository.FindAll();
+            var newsForm = new NewsForm
+            {
+                Categories = GetAllCategories(categories),
+                ViewMode = Enums.ViewMode.Add
+            };
+            return View("Edit", newsForm);
         }
 
         public async Task<ActionResult> Edit(int id)
@@ -52,6 +65,9 @@ namespace NEDAW.Controllers
 
             var newResult = Mapper.Map<News, NewsDtoForUpdate>(result);
 
+            var categoriesRepository = new GlobalRepository<NewsCategory>();
+            var categories = await categoriesRepository.FindAll();
+
             var newsForm = new NewsForm
             {
                 Title = newResult.Title,
@@ -60,10 +76,63 @@ namespace NEDAW.Controllers
                 NewsCategoryId = newResult.NewsCategoryId,
                 NewsCategory = newResult.NewsCategory,
                 ModifiedBy = newResult.ModifiedBy,
-                ModifiedOn = newResult.ModifiedOn
+                ModifiedOn = newResult.ModifiedOn,
+                Categories = GetAllCategories(categories),
+                ViewMode = Enums.ViewMode.Edit
             };
 
             return View(newsForm);
+        }
+
+        public async Task<ActionResult> Save(NewsForm news)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", news);
+            }
+
+            if (news.ViewMode == Enums.ViewMode.Add)
+            {
+                // New News
+                var newsModel = Mapper.Map<NewsForm, News>(news);
+                newsModel.CreatedBy = Guid.Parse(User.Identity.GetUserId());
+                newsModel.CreatedOn = DateTime.Now;
+                newsModel.UserId = newsModel.CreatedBy.ToString();
+                newsModel.ModifiedOn = newsModel.CreatedOn;
+                await _repository.Add(newsModel);
+            }
+            else
+            {
+                // Update News
+                var newsInDb = await _repository.FindById(news.Id);
+
+                // Copy from VM
+                newsInDb.Title = news.Title;
+                newsInDb.Image = news.Image;
+                newsInDb.Content = news.Content;
+                newsInDb.NewsCategoryId = news.NewsCategoryId;
+                newsInDb.UserId = User.Identity.GetUserId();
+                newsInDb.ModifiedOn = DateTime.Now;
+
+                await _repository.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "News");
+        }
+
+        private IEnumerable<SelectListItem> GetAllCategories(IEnumerable<NewsCategory> categories)
+        {
+            var selectList = new List<SelectListItem>();
+
+            foreach (var category in categories)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name.ToString()
+                });
+            }
+            return selectList;
         }
     }
 }

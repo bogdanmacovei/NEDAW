@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NEDAW.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace NEDAW.ViewModels
         [Required]
         [MaxLength(50, ErrorMessage = "Max Length is 50 characters!")]
         public string Name { get; set; }
+        public ViewMode ViewMode { get; set; }
     }
 }

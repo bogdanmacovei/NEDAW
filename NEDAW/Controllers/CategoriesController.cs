@@ -16,21 +16,35 @@ namespace NEDAW.Controllers
     {
         private readonly GlobalRepository<NewsCategory> _repository;
 
+        // trebuie modificat incat sa nu mai ating contextul
+        private readonly ApplicationDbContext _context;
+
         public CategoriesController()
         {
             _repository = new GlobalRepository<NewsCategory>();
+            _context = new ApplicationDbContext();
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var categories = await _repository.FindAll(); 
+            // var categories = await _repository.FindAll(); 
+            var categories = _context.NewsCategories.ToList();
             var categoriesVM = new NewsCategoryVM
             {
                 NewsCategories = categories
             };
 
             return View(categoriesVM);
+        }
+
+        public async Task<ActionResult> New()
+        {
+            var category = new NewsCategoryForm
+            {
+                ViewMode = Enums.ViewMode.Add
+            };
+            return View("Edit", category);
         }
 
         public async Task<ActionResult> Edit(int id)
@@ -44,7 +58,8 @@ namespace NEDAW.Controllers
 
             var newsCategoryForm = new NewsCategoryForm
             {
-                Name = category.Name
+                Name = category.Name,
+                ViewMode = Enums.ViewMode.Edit
             };
 
             return View(newsCategoryForm);
@@ -64,11 +79,26 @@ namespace NEDAW.Controllers
             }
 
             var categoryInDb = await _repository.FindById(newsCategory.Id);
-            categoryInDb.Name = newsCategory.Name;
-
-            await _repository.SaveChanges();
+            if (categoryInDb == null)
+            {
+                // New Category
+                CreateNewCategoryContext(newsCategory);
+                // await _repository.Add(newsCategory);
+            }
+            else
+            {
+                // Update Category
+                categoryInDb.Name = newsCategory.Name;
+                await _repository.SaveChanges();
+            }
 
             return RedirectToAction("Index", "Categories");
+        }
+
+        private void CreateNewCategoryContext(NewsCategory category)
+        {
+            _context.NewsCategories.Add(category);
+            _context.SaveChanges();
         }
     }
 }

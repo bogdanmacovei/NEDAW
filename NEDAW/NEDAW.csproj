@@ -208,6 +208,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Dtos\NewsCategoryDtoForUpdate.cs" />
     <Compile Include="Dtos\NewsDtoForUpdate.cs" />
+    <Compile Include="Enums\ViewModeEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -226,6 +227,10 @@
     <Compile Include="Migrations\201812260742343_ChangeNewsModel.cs" />
     <Compile Include="Migrations\201812260742343_ChangeNewsModel.Designer.cs">
       <DependentUpon>201812260742343_ChangeNewsModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812270954395_Added Navigation Property.cs" />
+    <Compile Include="Migrations\201812270954395_Added Navigation Property.Designer.cs">
+      <DependentUpon>201812270954395_Added Navigation Property.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -305,6 +310,7 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -334,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812260742343_ChangeNewsModel.resx">
       <DependentUpon>201812260742343_ChangeNewsModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812270954395_Added Navigation Property.resx">
+      <DependentUpon>201812270954395_Added Navigation Property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

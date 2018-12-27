@@ -1,13 +1,13 @@
 ﻿@model NEDAW.ViewModels.NewsCategoryForm
 
-<h2>Edit</h2>
+<h2>@Model.ViewMode.ToString()</h2>
 
 @using (Html.BeginForm("Save", "Categories"))
 {
     <div class="form-group">
         @Html.LabelFor(c => c.Name)
         <br />
-        @Html.TextBoxFor(c => c.Name, new { })
+        @Html.TextBoxFor(c => c.Name)
         <br />
         @Html.ValidationMessageFor(c => c.Name)
     </div>

@@ -1,9 +1,11 @@
-﻿using NEDAW.Models;
+﻿using NEDAW.Enums;
+using NEDAW.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NEDAW.ViewModels
 {
@@ -24,9 +26,12 @@ namespace NEDAW.ViewModels
         public int NewsCategoryId { get; set; }
 
         public NewsCategory NewsCategory { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
 
         public Guid ModifiedBy { get; set; }
 
         public DateTime ModifiedOn { get; set; }
+
+        public ViewMode ViewMode { get; set; }
     }
 }

@@ -1,0 +1,22 @@
+﻿@model NEDAW.ViewModels.NewsVM
+
+<h2>Pending News</h2>
+
+@if (Model.News.Count() == 0)
+{
+    <p>There are no items!</p>
+}
+else
+{
+    foreach (var article in Model.News)
+    {
+        <h3>@article.Title | @article.NewsCategory.Name</h3>
+        <img src="@article.Image" />
+        <br /><br />
+        <p>@article.Content</p>
+        <a href="#">Approve</a> <text>|</text> <a href="#">Ignore</a>
+        <br />
+        <p>By @article.User.Email on @article.CreatedOn</p>
+        <hr />
+    }
+}

@@ -19,6 +19,8 @@ namespace NEDAW.Models
         [Required]
         public string Content { get; set; }
 
+        public string Status { get; set; }
+
         public string Image { get; set; }
 
         public int NewsCategoryId { get; set; }
@@ -33,6 +35,7 @@ namespace NEDAW.Models
 
         public virtual ApplicationUser User { get; set; }
 
-        public DateTime ModifiedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
+
     }
 }

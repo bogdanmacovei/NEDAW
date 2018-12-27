@@ -27,10 +27,26 @@ namespace NEDAW.Controllers
         public async Task<ActionResult> Index()
         {
             var news = await _repository.FindAllInclude("NewsCategory", "User");
+            var result = news.Where(n => n.Status == "Approved");
 
             var newsVM = new NewsVM
             {
-                News = news
+                News = result
+            };
+
+            return View(newsVM);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Editor, Administrator")]
+        public async Task<ActionResult> Pending()
+        {
+            var news = await _repository.FindAllInclude("NewsCategory", "User");
+            var result = news.Where(n => n.Status == "Pending");
+
+            var newsVM = new NewsVM
+            {
+                News = result
             };
 
             return View(newsVM);
@@ -76,6 +92,7 @@ namespace NEDAW.Controllers
             return View(newsForm);
         }
 
+        [Authorize(Roles = "User, Editor, Administrator")]
         public async Task<ActionResult> Save(NewsForm news)
         {
             if (!ModelState.IsValid)
@@ -85,8 +102,18 @@ namespace NEDAW.Controllers
 
             if (news.ViewMode == Enums.ViewMode.Add)
             {
-                // New News
+                // New News 
                 var newsModel = Mapper.Map<NewsForm, News>(news);
+
+                if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    newsModel.Status = "Approved";
+                }
+                else
+                {
+                    newsModel.Status = "Pending";
+                }
+
                 newsModel.CreatedBy = Guid.Parse(User.Identity.GetUserId());
                 newsModel.CreatedOn = DateTime.Now;
                 newsModel.UserId = newsModel.CreatedBy.ToString();

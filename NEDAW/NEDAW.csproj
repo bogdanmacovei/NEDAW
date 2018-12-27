@@ -202,6 +202,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="ViewModels\NewsCategoryVM.cs" />
     <Compile Include="ViewModels\NewsForm.cs" />
     <Compile Include="ViewModels\NewsVM.cs" />
+    <Compile Include="ViewModels\UsersVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -316,6 +318,8 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Pending.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

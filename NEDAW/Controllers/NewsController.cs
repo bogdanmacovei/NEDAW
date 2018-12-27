@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace NEDAW.Controllers
 {
+    [Authorize(Roles = "User, Editor, Administrator")]
     public class NewsController : Controller
     {
         private readonly GlobalRepository<News> _repository;
@@ -24,6 +25,7 @@ namespace NEDAW.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             var news = await _repository.FindAllInclude("NewsCategory", "User");
@@ -64,6 +66,7 @@ namespace NEDAW.Controllers
             return View("Edit", newsForm);
         }
 
+        [Authorize(Roles = "Editor, Administrator")]
         public async Task<ActionResult> Edit(int id)
         {
             var result = await _repository.FindById(id);

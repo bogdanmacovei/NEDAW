@@ -1,9 +1,12 @@
 ﻿@model NEDAW.ViewModels.NewsForm
 
-<h2>@Model.ViewMode.ToString()</h2>
-
 @using (Html.BeginForm("Save", "News"))
 {
+    <h2>
+        @Html.DisplayTextFor(c => c.ViewMode)
+    </h2>
+    @Html.HiddenFor(c => c.ViewMode)
+
     <div class="form-group">
         @Html.LabelFor(c => c.Title)
         <br />

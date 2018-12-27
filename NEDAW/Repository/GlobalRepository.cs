@@ -71,5 +71,18 @@ namespace NEDAW.Repository
                 _context.SaveChanges();
             });
         }
+
+        public async Task<IEnumerable<T>> FindAllInclude(params string[] entities)
+        {
+            IQueryable<T> localContext = _objectSet;
+
+            foreach (var entity in entities)
+                localContext = localContext.Include(entity);
+
+            return await Task.Run(() =>
+            {
+                return localContext.ToList();
+            });
+        }
     }
 }

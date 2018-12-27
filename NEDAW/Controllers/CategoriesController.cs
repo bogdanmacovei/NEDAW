@@ -12,24 +12,20 @@ using NEDAW.Repository;
 
 namespace NEDAW.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly GlobalRepository<NewsCategory> _repository;
 
-        // trebuie modificat incat sa nu mai ating contextul
-        private readonly ApplicationDbContext _context;
-
         public CategoriesController()
         {
             _repository = new GlobalRepository<NewsCategory>();
-            _context = new ApplicationDbContext();
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            // var categories = await _repository.FindAll(); 
-            var categories = _context.NewsCategories.ToList();
+            var categories = await _repository.FindAll(); 
             var categoriesVM = new NewsCategoryVM
             {
                 NewsCategories = categories
@@ -38,7 +34,7 @@ namespace NEDAW.Controllers
             return View(categoriesVM);
         }
 
-        public async Task<ActionResult> New()
+        public ActionResult New()
         {
             var category = new NewsCategoryForm
             {
@@ -82,7 +78,7 @@ namespace NEDAW.Controllers
             if (categoryInDb == null)
             {
                 // New Category
-                CreateNewCategoryContext(newsCategory);
+                await CreateNewCategoryContext(newsCategory);
                 // await _repository.Add(newsCategory);
             }
             else
@@ -92,13 +88,12 @@ namespace NEDAW.Controllers
                 await _repository.SaveChanges();
             }
 
-            return RedirectToAction("Index", "Categories");
+            return await Task.Run(() =>
+            {
+                return RedirectToAction("Index", "Categories");
+            });
         }
 
-        private void CreateNewCategoryContext(NewsCategory category)
-        {
-            _context.NewsCategories.Add(category);
-            _context.SaveChanges();
-        }
+        private async Task CreateNewCategoryContext(NewsCategory category) => await _repository.Add(category);
     }
 }

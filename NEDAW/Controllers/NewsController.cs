@@ -18,25 +18,17 @@ namespace NEDAW.Controllers
     {
         private readonly GlobalRepository<News> _repository;
 
-        // trebuie modificat incat sa nu mai ating contextul
-        private readonly ApplicationDbContext _context;
-
         public NewsController()
         {
             _repository = new GlobalRepository<News>();
-            _context = new ApplicationDbContext();
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            // var news = await _repository.FindAll();
-            // de modificat aici, sa nu ating contextul
-            var news = _context.News.Include("NewsCategory").Include("User").ToList();
-            // trebuie inclus .Include("User"), dar nu gasesc momentan
-            // schema pentru el
+            var news = await _repository.FindAllInclude("NewsCategory", "User");
 
-             var newsVM = new NewsVM
+            var newsVM = new NewsVM
             {
                 News = news
             };

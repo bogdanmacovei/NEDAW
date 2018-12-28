@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,17 +16,18 @@ namespace NEDAW.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
+        private readonly UserRepository _repository;
+        
         public AdminController()
         {
-            _context = new ApplicationDbContext();
+            _repository = new UserRepository();
         }
 
         // GET: Admin
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var users = _context.Users.ToList();
+            // var users = _context.Users.ToList();
+            var users = await _repository.FindAll();
             var usersVM = new UsersVM
             {
                 Users = users
@@ -33,21 +35,24 @@ namespace NEDAW.Controllers
             return View(usersVM);
         }
 
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
-            ApplicationUser user = _context.Users.Find(id);
-            user.AllRoles = GetAllRoles();
+            ApplicationUser user = await _repository.FindById(id);
+
+            user.AllRoles = await GetAllRoles();
+
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
+
             return View(user);
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetAllRoles()
+        public async Task<IEnumerable<SelectListItem>> GetAllRoles()
         {
             var selectList = new List<SelectListItem>();
 
-            var roles = _context.Roles.ToList();
+            var roles = await _repository.Roles();
 
             foreach (var role in roles)
             {
@@ -62,10 +67,10 @@ namespace NEDAW.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit(string id, ApplicationUser newData)
+        public async Task<ActionResult> Edit(string id, ApplicationUser newData)
         {
-            ApplicationUser user = _context.Users.Find(id);
-            user.AllRoles = GetAllRoles();
+            ApplicationUser user = await _repository.FindById(id);
+            user.AllRoles = await GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
 
@@ -80,21 +85,22 @@ namespace NEDAW.Controllers
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
 
-                    var roles = _context.Roles.ToList();
+                    var roles = await _repository.Roles();
                     foreach (var role in roles)
                     {
                         UserManager.RemoveFromRole(id, role.Name);
                     }
-                    var selectedRole = _context.Roles.Find(HttpContext.Request.Params.Get("newRole"));
+                    var selectedRole = _repository.AllRoles().Find(HttpContext.Request.Params.Get("newRole"));
                     UserManager.AddToRole(id, selectedRole.Name);
-                    _context.SaveChanges();
+                    await _repository.SaveChanges();
                 }
                 return RedirectToAction("Index");
             }
             catch (Exception e)
             {
                 Response.Write(e.Message);
-                return View(user);
+                return View(user);
+
             }
         }
     }

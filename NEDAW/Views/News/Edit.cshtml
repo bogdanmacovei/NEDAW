@@ -7,32 +7,35 @@
     </h2>
     @Html.HiddenFor(c => c.ViewMode)
 
-    <div class="form-group">
+    <div class="section form-group edit">
         @Html.LabelFor(c => c.Title)
         <br />
-        @Html.TextBoxFor(c => c.Title)
+        @Html.TextBoxFor(c => c.Title, new { @class = "input" })
         <br />
         @Html.ValidationMessageFor(c => c.Title)
         <br />
 
         @Html.LabelFor(c => c.Image)
         <br />
-        @Html.TextBoxFor(c => c.Image)
+        @Html.TextBoxFor(c => c.Image, new { @class = "input" })
+        <br />
         <br />
 
         @Html.LabelFor(c => c.Content)
         <br />
-        @Html.TextAreaFor(c => c.Content)
+        @Html.TextAreaFor(c => c.Content, new { @class = "input" })
         <br />
         @Html.ValidationMessageFor(c => c.Content)
         <br />
 
         @Html.LabelFor(c => c.NewsCategory)
         <br />
-        @Html.DropDownListFor(c => c.NewsCategoryId, Model.Categories)
+        @Html.DropDownListFor(c => c.NewsCategoryId, Model.Categories, new { @class = "input" })
         <br />
+
+        <br />
+        <button class="primary-button" type="submit">Save</button>
     </div>
     @Html.HiddenFor(c => c.Id)
     @Html.AntiForgeryToken()
-    <button type="submit">Save</button>
 }

@@ -96,6 +96,7 @@ namespace NEDAW.Controllers
         }
 
         [Authorize(Roles = "User, Editor, Administrator")]
+        [HttpPost]
         public async Task<ActionResult> Save(NewsForm news)
         {
             if (!ModelState.IsValid)

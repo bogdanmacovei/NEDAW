@@ -2,21 +2,35 @@
 
 <h2>Last News</h2>
 
+<div class="section">
+    <div class="container">
+        <a class="primary-button" href="/News/New">New</a>
+    </div>
+</div>
+
 @if (Model.News.Count() == 0)
 {
     <p>There are no items!</p>
 }
 else
 {
-    foreach (var article in Model.News)
+    for (int index = 0; index < Model.News.Count(); index++)
     {
-        <h3>@article.Title | @article.NewsCategory.Name</h3>
-        <img src="@article.Image" />
-        <br /><br />
-        <p>@article.Content</p>
-        <a href="/News/Edit/@article.Id">Read More</a>
-        <br />
-        <p>By @article.User.Email on @article.CreatedOn</p>
-        <hr />
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    @{
+                        var article = Model.News.ElementAt(index);
+                        @Html.Partial("_News", article);
+                        index++;
+                        if (index < Model.News.Count())
+                        {
+                            article = Model.News.ElementAt(index);
+                            @Html.Partial("_News", article);
+                        }
+                    }
+                </div>
+            </div>
+        </div>
     }
 }

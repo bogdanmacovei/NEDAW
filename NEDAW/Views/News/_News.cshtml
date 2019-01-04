@@ -1,14 +1,14 @@
 ﻿@model NEDAW.Models.News
 
-<div class="col-md-6">
+<div class="col-md-3">
     <div class="post post-thumb">
-        <a class="post-img" href="/News/Edit/@Model.Id"><img src="@Model.Image" alt=""></a>
+        <a class="post-img" href="/News/Show/@Model.Id"><img src="@Model.Image" alt=""></a>
         <div class="post-body">
             <div class="post-meta">
-                <a class="post-category cat-2" href="#">@Model.NewsCategory.Name</a>
-                <span class="post-date">@Model.ModifiedOn</span>
+                <a class="post-category cat-2" href="/News/Category/@Model.NewsCategoryId">@Model.NewsCategory.Name</a>
+                <span class="post-date">@Convert.ToDateTime(Model.ModifiedOn).ToString("dd/MM/yyyy")</span>
             </div>
-            <h3 class="post-title"><a href="/News/Edit/@Model.Id">@Model.Content</a></h3>
+            <h3 class="post-title"><a href="/News/Show/@Model.Id">@Model.Title</a></h3>
         </div>
     </div>
 </div>

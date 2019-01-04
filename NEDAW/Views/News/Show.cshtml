@@ -1,0 +1,28 @@
+﻿@model NEDAW.Models.News
+<br /><br /><br />
+<h2>@Model.Title</h2>
+
+
+<img style="max-width:600px; max-width:600px;" src="@Model.Image" /> <br /> <br />
+
+<div>@Model.Content</div>
+
+<br />
+<p>By <b>@Model.User.UserName</b> at @Model.CreatedOn</p>
+
+<br />
+
+@if (ViewBag.showButtons == true && Model.UserId == ViewBag.currentUser || ViewBag.isAdmin == true)
+{
+    <form class="col-12">
+        <div class="form-row">
+            <a class="btn btn-sm btn-info" href="/News/Edit/@Model.Id">Edit</a>
+
+            <form method="post" action="/Article/Delete/@Model.Id">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+        </div>
+    </form>
+    
+}

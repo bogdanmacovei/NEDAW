@@ -25,6 +25,7 @@ namespace NEDAW.Models
     {
         public DbSet<News> News { get; set; }
         public DbSet<NewsCategory> NewsCategories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

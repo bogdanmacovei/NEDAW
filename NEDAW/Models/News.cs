@@ -17,6 +17,7 @@ namespace NEDAW.Models
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(4096)]
         public string Content { get; set; }
 
         public string Status { get; set; }

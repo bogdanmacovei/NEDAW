@@ -105,8 +105,7 @@ namespace NEDAW.Controllers
         }
 
         //
-        // POST: /Account/VerifyCode
-        [HttpPost]
+        // POST: /Account/VerifyCode        [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)

@@ -1,6 +1,6 @@
 ﻿@model NEDAW.ViewModels.NewsVM
 <br /><br /><br />
-<h2>Last News</h2>
+<h2>@ViewBag.Name</h2>
 
 <div class="section">
     <div class="container">
@@ -29,11 +29,6 @@ else
                             @Html.Partial("_News", article);
                         }
                         index++;
-                        if (index < Model.News.Count())
-                        {
-                            article = Model.News.ElementAt(index);
-                            @Html.Partial("_News", article);
-                        }
                     }
                 </div>
             </div>

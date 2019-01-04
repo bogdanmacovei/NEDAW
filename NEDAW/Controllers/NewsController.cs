@@ -28,7 +28,8 @@ namespace NEDAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            var news = await _repository.FindAllInclude("NewsCategory", "User");
+            var allNews = await _repository.FindAllInclude("NewsCategory", "User");
+            var news = allNews.OrderByDescending(n => n.ModifiedOn).Take(10);
             var result = news.Where(n => n.Status == "Approved");
 
             var newsVM = new NewsVM
@@ -141,6 +142,46 @@ namespace NEDAW.Controllers
             }
 
             return RedirectToAction("Index", "News");
+        }
+
+        public async Task<ActionResult> Category(int id)
+        {
+            var news = await _repository.Find(n => n.NewsCategoryId == id);
+
+            var result = news.Include("User").Include("NewsCategory");
+            news = result.Where(n => n.Status == "Approved");
+
+            GlobalRepository<NewsCategory> _categoriesRepository = new GlobalRepository<NewsCategory>();
+            var categories = await _categoriesRepository.Find(c => c.Id == id);
+
+            var titlu = categories.Select(c => c.Name).FirstOrDefault();
+            ViewBag.Name = titlu;
+
+            var newsVM = new NewsVM
+            {
+                News = news
+            };
+
+            return View(newsVM);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> Show(int id)
+        {
+            var result = await _repository.Find(n => n.Id == id);
+            var article = result.FirstOrDefault();
+
+            ViewBag.showButtons = false;
+
+            if (User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                ViewBag.showButtons = true;
+            }
+
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.currentUser = User.Identity.GetUserId();
+
+            return View(article);
         }
 
         private IEnumerable<SelectListItem> GetAllCategories(IEnumerable<NewsCategory> categories)

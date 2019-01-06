@@ -255,6 +255,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CommentsVM.cs" />
     <Compile Include="ViewModels\NewsCategoryForm.cs" />
     <Compile Include="ViewModels\NewsCategoryVM.cs" />
     <Compile Include="ViewModels\NewsForm.cs" />
@@ -332,10 +333,13 @@
     <Content Include="Views\News\_News.cshtml" />
     <Content Include="Views\News\Category.cshtml" />
     <Content Include="Views\News\Show.cshtml" />
+    <Content Include="Views\Comments\_AddComment.cshtml" />
+    <Content Include="Views\Comments\_Comment.cshtml" />
+    <Content Include="Views\Comments\_CommentsSection.cshtml" />
+    <Content Include="Views\Comments\_CommentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Comments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

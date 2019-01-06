@@ -1,0 +1,19 @@
+﻿@model NEDAW.Models.Comment
+
+<form method="post" action="/Comments/New">
+    @Html.HiddenFor(c => c.NewsId)
+
+    <div class="section-row">
+        <div class="section-title">
+            <h2>Leave a comment</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.TextAreaFor(c => c.Message, new { @class = "input" })
+                </div>
+                <button class="primary-button" type="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>

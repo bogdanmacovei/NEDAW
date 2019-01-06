@@ -32,6 +32,10 @@ namespace NEDAW.ViewModels
 
         public DateTime ModifiedOn { get; set; }
 
+        public ApplicationUser User { get; set; }
+
         public ViewMode ViewMode { get; set; }
+
+        public List<Comment> Comments { get; set; }
     }
 }

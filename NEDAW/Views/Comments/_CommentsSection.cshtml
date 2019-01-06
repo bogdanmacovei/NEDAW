@@ -1,0 +1,12 @@
+﻿@model NEDAW.ViewModels.CommentsVM
+
+@Html.Action("New", "Comments", new { newsId = Model.NewsId })
+
+<div class="section-row">
+    <div class="section-title">
+        <h2>Comments</h2>
+    </div>
+    <div class="post-comments">
+        @Html.Partial("~/Views/Comments/_CommentList.cshtml", Model)
+    </div>
+</div>

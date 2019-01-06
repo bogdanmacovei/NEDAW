@@ -29,8 +29,7 @@ namespace NEDAW.Controllers
         public async Task<ActionResult> Index()
         {
             var allNews = await _repository.FindAllInclude("NewsCategory", "User");
-            var news = allNews.OrderByDescending(n => n.ModifiedOn).Take(10);
-            var result = news.Where(n => n.Status == "Approved");
+            var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn).Take(10);
 
             var newsVM = new NewsVM
             {
@@ -169,7 +168,7 @@ namespace NEDAW.Controllers
         public async Task<ActionResult> Show(int id)
         {
             var result = await _repository.Find(n => n.Id == id);
-            var article = result.FirstOrDefault();
+            var news = result.FirstOrDefault();
 
             ViewBag.showButtons = false;
 
@@ -181,7 +180,25 @@ namespace NEDAW.Controllers
             ViewBag.isAdmin = User.IsInRole("Administrator");
             ViewBag.currentUser = User.Identity.GetUserId();
 
-            return View(article);
+            var newResult = Mapper.Map<News, NewsDtoForUpdate>(news);
+
+            var commentsRepository = new GlobalRepository<Comment>();
+            var comments = await commentsRepository.Find(c => c.NewsId == news.Id);
+
+            var newsForm = new NewsForm
+            {
+                Title = news.Title,
+                Content = news.Content,
+                Image = news.Image,
+                NewsCategoryId = news.NewsCategoryId,
+                NewsCategory = news.NewsCategory,
+                ModifiedBy = Guid.Parse(news.UserId),
+                User = news.User,
+                ModifiedOn = news.ModifiedOn,
+                Comments = comments.ToList()
+            };
+
+            return View(newsForm);
         }
 
         private IEnumerable<SelectListItem> GetAllCategories(IEnumerable<NewsCategory> categories)

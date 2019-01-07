@@ -142,6 +142,15 @@ RESPONSIVE
      color: #fff;
      opacity: 0.9;
 }
+
+.info {
+    background-color: #5bc0de;
+}
+
+.danger {
+    background-color: #d9534f;
+}
+
  .section {
      padding-top: 40px;
 }
@@ -751,7 +760,7 @@ RESPONSIVE
      border-radius: 50%;
 }
  .post-comments .media .media-body .media-heading h4 {
-     text-transform: capitalize;
+     /*text-transform: capitalize;*/
 }
  .post-comments .media .media-body .media-heading .time {
      font-size: 13px;

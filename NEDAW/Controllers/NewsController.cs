@@ -228,6 +228,7 @@ namespace NEDAW.Controllers
 
             var newsForm = new NewsForm
             {
+                Id = news.Id,
                 Title = news.Title,
                 Content = news.Content,
                 Image = news.Image,

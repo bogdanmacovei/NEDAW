@@ -3,6 +3,6 @@
 @{ 
     foreach (var comment in Model.Comments)
     {
-        Html.RenderPartial("_Comment", comment);
+        Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
     }
 }

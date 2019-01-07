@@ -35,7 +35,7 @@ namespace NEDAW.Controllers
             _comment.UserId = User.Identity.GetUserId();
             _comment.CreatedOn = _comment.ModifiedOn = DateTime.Now;
             await _repository.Add(_comment);
-            return RedirectToAction("Show", "News", _comment.NewsId);
+            return RedirectToAction("Show", "News", new { id = _comment.NewsId });
         }
 
         public async Task<ActionResult> Save()

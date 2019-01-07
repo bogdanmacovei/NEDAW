@@ -337,6 +337,7 @@
     <Content Include="Views\Comments\_Comment.cshtml" />
     <Content Include="Views\Comments\_CommentsSection.cshtml" />
     <Content Include="Views\Comments\_CommentList.cshtml" />
+    <Content Include="Views\News\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

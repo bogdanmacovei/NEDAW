@@ -8,9 +8,34 @@
     </div>
 </div>
 
+<div class="section">
+    <div class="container">
+        @using (Html.BeginForm("Category", "News", FormMethod.Get))
+        {
+            @Html.DropDownList("SortByDate", new List<SelectListItem>
+            {
+                new SelectListItem { Text = "asc", Value = "asc" },
+                new SelectListItem { Text = "desc", Value = "desc" }
+            }, "Sort by date")
+
+            @Html.DropDownList("SortByTitle", new List<SelectListItem>
+            {
+                new SelectListItem { Text = "asc", Value = "asc" },
+                new SelectListItem { Text = "desc", Value = "desc" }
+            }, "Sort by title")
+
+            <button class="btn btn-group" type="submit">Filter</button>
+        }
+    </div>
+</div>
+
+
 @if (Model.News.Count() == 0)
 {
-    <p>There are no items!</p>
+    <div class="section">
+        <p>There are no items!</p>
+    </div>
+
 }
 else
 {

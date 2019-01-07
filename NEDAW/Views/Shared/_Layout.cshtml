@@ -27,6 +27,14 @@
                     {
                         <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
                     }
+                    <li>
+                        @using (Html.BeginForm("Index", "News", FormMethod.Get))
+                        {
+                            @Html.TextBox("searchText")
+
+                            <button class="primary-button" type="submit">Search</button>
+                        }
+                    </li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")

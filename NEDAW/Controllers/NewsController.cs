@@ -26,17 +26,35 @@ namespace NEDAW.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchText)
         {
-            var allNews = await _repository.FindAllInclude("NewsCategory", "User");
-            var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn).Take(10);
-
-            var newsVM = new NewsVM
+            if (String.IsNullOrEmpty(searchText))
             {
-                News = result
-            };
+                var allNews = await _repository.FindAllInclude("NewsCategory", "User");
+                var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn).Take(10);
 
-            return View(newsVM);
+                var newsVM = new NewsVM
+                {
+                    News = result
+                };
+
+                return View(newsVM);
+            }
+
+            else
+            {
+                var selectedNews = await _repository.FindAllInclude("NewsCategory", "User");
+                var result = selectedNews.Where(n => n.Status == "Approved" && (n.Title.ToLower().Contains(searchText.ToLower()) ||
+                    n.Content.ToLower().Contains(searchText.ToLower()))).OrderByDescending(n => n.ModifiedOn).Take(10);
+
+                var newsVM = new NewsVM
+                {
+                    News = result
+                };
+
+                return View(newsVM);
+            }
+
         }
 
         [HttpGet]
@@ -143,12 +161,35 @@ namespace NEDAW.Controllers
             return RedirectToAction("Index", "News");
         }
 
-        public async Task<ActionResult> Category(int id)
+        public async Task<ActionResult> Category(int id, string sortByTitle, string sortByDate = "desc")
         {
             var news = await _repository.Find(n => n.NewsCategoryId == id);
 
             var result = news.Include("User").Include("NewsCategory");
             news = result.Where(n => n.Status == "Approved");
+
+            IQueryable<News> newsLocal = news;
+
+            if (!String.IsNullOrEmpty(sortByDate))
+            {
+                if (sortByDate == "asc")
+                    newsLocal = news.OrderBy(n => n.ModifiedOn);
+                else
+                    newsLocal = news.OrderByDescending(n => n.ModifiedOn);
+
+                news = newsLocal;
+            }
+
+            if (!String.IsNullOrEmpty(sortByTitle))
+            {
+                if (sortByTitle == "asc")
+                    newsLocal = news.OrderBy(n => n.Title);
+                else
+                    newsLocal = news.OrderByDescending(n => n.Title);
+
+                news = newsLocal;
+            }
+
 
             GlobalRepository<NewsCategory> _categoriesRepository = new GlobalRepository<NewsCategory>();
             var categories = await _categoriesRepository.Find(c => c.Id == id);

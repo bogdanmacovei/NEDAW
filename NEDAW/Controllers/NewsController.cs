@@ -18,6 +18,7 @@ namespace NEDAW.Controllers
     public class NewsController : Controller
     {
         private readonly GlobalRepository<News> _repository;
+        private const int pageSize = 9;
 
         public NewsController()
         {
@@ -26,12 +27,14 @@ namespace NEDAW.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index(string searchText)
+        public ActionResult Index(string searchText, int? page)
         {
+            int pageNumber = (page ?? 1);
             if (String.IsNullOrEmpty(searchText))
             {
                 var allNews = _repository.FindAllInclude("NewsCategory", "User");
-                var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn).Take(10);
+                var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn)
+                    .Skip(pageSize * (pageNumber - 1)).Take(pageSize);
 
                 var newsVM = new NewsVM
                 {

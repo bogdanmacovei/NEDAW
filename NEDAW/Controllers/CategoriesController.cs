@@ -23,9 +23,9 @@ namespace NEDAW.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var categories = await _repository.FindAll(); 
+            var categories = _repository.FindAll();
             var categoriesVM = new NewsCategoryVM
             {
                 NewsCategories = categories
@@ -43,9 +43,9 @@ namespace NEDAW.Controllers
             return View("Edit", category);
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var result = await _repository.FindById(id);
+            var result = _repository.FindById(id);
 
             if (result == null)
                 return HttpNotFound();
@@ -62,7 +62,7 @@ namespace NEDAW.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Save(NewsCategory newsCategory)
+        public ActionResult Save(NewsCategory newsCategory)
         {
             if (!ModelState.IsValid)
             {
@@ -74,26 +74,23 @@ namespace NEDAW.Controllers
                 return View("Edit", newsCategoryForm);
             }
 
-            var categoryInDb = await _repository.FindById(newsCategory.Id);
+            var categoryInDb = _repository.FindById(newsCategory.Id);
             if (categoryInDb == null)
             {
                 // New Category
-                await CreateNewCategoryContext(newsCategory);
+                CreateNewCategoryContext(newsCategory);
                 // await _repository.Add(newsCategory);
             }
             else
             {
                 // Update Category
                 categoryInDb.Name = newsCategory.Name;
-                await _repository.SaveChanges();
+                _repository.SaveChanges();
             }
 
-            return await Task.Run(() =>
-            {
-                return RedirectToAction("Index", "Categories");
-            });
+            return RedirectToAction("Index", "Categories");
         }
 
-        private async Task CreateNewCategoryContext(NewsCategory category) => await _repository.Add(category);
+        private void CreateNewCategoryContext(NewsCategory category) => _repository.Add(category);
     }
 }

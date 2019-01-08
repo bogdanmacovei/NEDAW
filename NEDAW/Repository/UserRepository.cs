@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace NEDAW.Repository
@@ -19,28 +18,19 @@ namespace NEDAW.Repository
             _context = new ApplicationDbContext();
         }
 
-        public async Task<IEnumerable<ApplicationUser>> FindAll()
+        public IEnumerable<ApplicationUser> FindAll()
         {
-            return await Task.Run(() =>
-            {
-                return _context.Users.ToList();
-            });
+            return _context.Users.ToList();
         }
 
-        public async Task<ApplicationUser> FindById(string id)
+        public ApplicationUser FindById(string id)
         {
-            return await Task.Run(() =>
-            {
-                return _context.Users.Where(ent => ent.Id == id).FirstOrDefault();
-            });
+            return _context.Users.Where(ent => ent.Id == id).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<IdentityRole>> Roles()
+        public IEnumerable<IdentityRole> Roles()
         {
-            return await Task.Run(() =>
-            {
-                return _context.Roles.ToList();
-            });
+            return _context.Roles.ToList();
         }
 
         public IDbSet<IdentityRole> AllRoles()
@@ -48,12 +38,9 @@ namespace NEDAW.Repository
             return _context.Roles;
         }
 
-        public async Task SaveChanges()
+        public void SaveChanges()
         {
-            await Task.Factory.StartNew(() =>
-            {
-                _context.SaveChanges();
-            });
+            _context.SaveChanges();
         }
     }
 }

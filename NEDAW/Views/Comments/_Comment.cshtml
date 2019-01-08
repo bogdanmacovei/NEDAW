@@ -5,8 +5,17 @@
         <div class="media-heading">
             <h5>@Model.User.UserName</h5>
             <span class="time">@Model.ModifiedOn</span>
+
             @*<a href="#" class="reply">Edit</a>*@
         </div>
         <p>@Model.Message</p>
+        @if (this.User.Identity.Name.ToString() == Model.User.UserName)
+        {
+
+            <form method="post" action="/Comments/Delete/@Model.Id">
+                 @Html.HttpMethodOverride(HttpVerbs.Delete)
+                 <button class="primary-button btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+         }
     </div>
 </div>

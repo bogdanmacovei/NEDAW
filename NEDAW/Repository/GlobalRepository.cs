@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace NEDAW.Repository
@@ -22,67 +21,46 @@ namespace NEDAW.Repository
             _objectSet = _context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> FindAll()
+        public IEnumerable<T> FindAll()
         {
-            return await Task.Run(() =>
-            {
-                return _objectSet.ToList();
-            });
+            return _objectSet.ToList();
         }
 
-        public async Task<IQueryable<T>> Find(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return await Task.Run(() =>
-            {
-                return _objectSet.Where(predicate);
-            });
+            return _objectSet.Where(predicate);
         }
 
-        public async Task<T> FindById(int id)
+        public T FindById(int id)
         {
-            return await Task.Run(() =>
-            {
-                return _objectSet.Where(ent => ent.Id == id).FirstOrDefault();
-            });
+            return _objectSet.Where(ent => ent.Id == id).FirstOrDefault();
         }
 
-        public async Task Add(T entity)
+        public void Add(T entity)
         {
-            await Task.Factory.StartNew(async () =>
-            {
-                _objectSet.Add(entity);
-                await this.SaveChanges();
-            });
+            _objectSet.Add(entity);
+            SaveChanges();
         }
 
-        public async Task Remove(T entity)
+        public void Remove(T entity)
         {
-            await Task.Factory.StartNew(async () =>
-            {
-                _objectSet.Remove(entity);
-                await this.SaveChanges();
-            });
+            _objectSet.Remove(entity);
+            SaveChanges();
         }
 
-        public async Task SaveChanges()
+        public void SaveChanges()
         {
-            await Task.Factory.StartNew(() =>
-            {
-                _context.SaveChanges();
-            });
+            _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<T>> FindAllInclude(params string[] entities)
+        public IEnumerable<T> FindAllInclude(params string[] entities)
         {
             IQueryable<T> localContext = _objectSet;
 
             foreach (var entity in entities)
                 localContext = localContext.Include(entity);
 
-            return await Task.Run(() =>
-            {
-                return localContext.ToList();
-            });
+            return localContext.ToList();
         }
     }
 }

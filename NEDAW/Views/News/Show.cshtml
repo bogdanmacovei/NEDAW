@@ -18,7 +18,7 @@
         <div class="form-row">
             <a class="btn btn-sm btn-info primary-button" href="/News/Edit/@Model.Id">Edit</a>
 
-            <form method="post" action="/Article/Delete/@Model.Id">
+            <form method="post" action="/News/Delete/@Model.Id">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button class="primary-button btn btn-sm btn-danger" type="submit">Delete</button>
             </form>

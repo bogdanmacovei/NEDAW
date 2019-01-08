@@ -14,7 +14,12 @@ else
         <img src="@article.Image" />
         <br /><br />
         <p>@article.Content</p>
-        <a href="#">Approve</a> <text>|</text> <a href="#">Ignore</a>
+
+        @Html.ActionLink("Approve", "Approve", new { articleId = article.Id })
+        <span>|</span>
+        @Html.ActionLink("Ignore", "Ignore", new { articleId = article.Id })
+
+        
         <br />
         <p>By @article.User.Email on @article.CreatedOn</p>
         <hr />

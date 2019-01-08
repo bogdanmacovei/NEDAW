@@ -10,7 +10,7 @@ namespace NEDAW.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "News");
         }
 
         public ActionResult About()

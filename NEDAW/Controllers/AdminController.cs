@@ -24,10 +24,10 @@ namespace NEDAW.Controllers
         }
 
         // GET: Admin
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             // var users = _context.Users.ToList();
-            var users = await _repository.FindAll();
+            var users = _repository.FindAll();
             var usersVM = new UsersVM
             {
                 Users = users
@@ -35,11 +35,11 @@ namespace NEDAW.Controllers
             return View(usersVM);
         }
 
-        public async Task<ActionResult> Edit(string id)
+        public ActionResult Edit(string id)
         {
-            ApplicationUser user = await _repository.FindById(id);
+            ApplicationUser user = _repository.FindById(id);
 
-            user.AllRoles = await GetAllRoles();
+            user.AllRoles = GetAllRoles();
 
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
@@ -48,11 +48,11 @@ namespace NEDAW.Controllers
         }
 
         [NonAction]
-        public async Task<IEnumerable<SelectListItem>> GetAllRoles()
+        public IEnumerable<SelectListItem> GetAllRoles()
         {
             var selectList = new List<SelectListItem>();
 
-            var roles = await _repository.Roles();
+            var roles = _repository.Roles();
 
             foreach (var role in roles)
             {
@@ -67,10 +67,10 @@ namespace NEDAW.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Edit(string id, ApplicationUser newData)
+        public ActionResult Edit(string id, ApplicationUser newData)
         {
-            ApplicationUser user = await _repository.FindById(id);
-            user.AllRoles = await GetAllRoles();
+            ApplicationUser user = _repository.FindById(id);
+            user.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
 
@@ -85,14 +85,14 @@ namespace NEDAW.Controllers
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
 
-                    var roles = await _repository.Roles();
+                    var roles = _repository.Roles();
                     foreach (var role in roles)
                     {
                         UserManager.RemoveFromRole(id, role.Name);
                     }
                     var selectedRole = _repository.AllRoles().Find(HttpContext.Request.Params.Get("newRole"));
                     UserManager.AddToRole(id, selectedRole.Name);
-                    await _repository.SaveChanges();
+                    _repository.SaveChanges();
                 }
                 return RedirectToAction("Index");
             }

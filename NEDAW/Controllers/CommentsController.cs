@@ -21,7 +21,7 @@ namespace NEDAW.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> New(int newsId)
+        public ActionResult New(int newsId)
         {
             var newCommentModel = new Comment();
             newCommentModel.NewsId = newsId;
@@ -29,16 +29,33 @@ namespace NEDAW.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> New(Comment _comment)
+        public ActionResult New(Comment _comment)
         {
             _comment.CreatedBy = Guid.Parse(User.Identity.GetUserId());
             _comment.UserId = User.Identity.GetUserId();
             _comment.CreatedOn = _comment.ModifiedOn = DateTime.Now;
-            await _repository.Add(_comment);
+            _repository.Add(_comment);
             return RedirectToAction("Show", "News", new { id = _comment.NewsId });
         }
 
-        public async Task<ActionResult> Save()
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var entity = _repository.Find(m => m.Id == id);
+            var news = entity.FirstOrDefault();
+
+            if (news.UserId != User.Identity.GetUserId())
+            {
+                return HttpNotFound();
+            }
+
+            _repository.Remove(news);
+
+
+            return RedirectToAction("Show", "News", new { id = news.NewsId });
+        }
+
+        public ActionResult Save()
         {
             return View();
         }

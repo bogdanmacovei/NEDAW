@@ -22,12 +22,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("News", "Index", "News")</li>
-                    <li>@Html.ActionLink("Add new", "New", "News")</li>
+                    @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Editor"))
+                    {
+                        <li>@Html.ActionLink("Pending", "Pending", "News")</li>
+                    }
                     @if (this.User.IsInRole("Administrator"))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
                     }
-                    <li>
+                    <li style="padding-top: 5px; padding-bottom: 5px;">
+                        @*ugly af ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*@
                         @using (Html.BeginForm("Index", "News", FormMethod.Get))
                         {
                             @Html.TextBox("searchText")

@@ -26,11 +26,11 @@ namespace NEDAW.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Index(string searchText)
+        public ActionResult Index(string searchText)
         {
             if (String.IsNullOrEmpty(searchText))
             {
-                var allNews = await _repository.FindAllInclude("NewsCategory", "User");
+                var allNews = _repository.FindAllInclude("NewsCategory", "User");
                 var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn).Take(10);
 
                 var newsVM = new NewsVM
@@ -43,7 +43,7 @@ namespace NEDAW.Controllers
 
             else
             {
-                var selectedNews = await _repository.FindAllInclude("NewsCategory", "User");
+                var selectedNews = _repository.FindAllInclude("NewsCategory", "User");
                 var result = selectedNews.Where(n => n.Status == "Approved" && (n.Title.ToLower().Contains(searchText.ToLower()) ||
                     n.Content.ToLower().Contains(searchText.ToLower()))).OrderByDescending(n => n.ModifiedOn).Take(10);
 
@@ -59,9 +59,9 @@ namespace NEDAW.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Editor, Administrator")]
-        public async Task<ActionResult> Pending()
+        public ActionResult Pending()
         {
-            var news = await _repository.FindAllInclude("NewsCategory", "User");
+            var news = _repository.FindAllInclude("NewsCategory", "User");
             var result = news.Where(n => n.Status == "Pending");
 
             var newsVM = new NewsVM
@@ -72,10 +72,11 @@ namespace NEDAW.Controllers
             return View(newsVM);
         }
 
-        public async Task<ActionResult> New()
+        [Authorize(Roles = "User, Editor, Administrator")]
+        public ActionResult New()
         {
             var categoriesRepository = new GlobalRepository<NewsCategory>();
-            var categories = await categoriesRepository.FindAll();
+            var categories = categoriesRepository.FindAll();
             var newsForm = new NewsForm
             {
                 Categories = GetAllCategories(categories),
@@ -85,9 +86,9 @@ namespace NEDAW.Controllers
         }
 
         [Authorize(Roles = "Editor, Administrator")]
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var result = await _repository.FindById(id);
+            var result = _repository.FindById(id);
 
             if (result == null)
                 return HttpNotFound();
@@ -95,7 +96,7 @@ namespace NEDAW.Controllers
             var newResult = Mapper.Map<News, NewsDtoForUpdate>(result);
 
             var categoriesRepository = new GlobalRepository<NewsCategory>();
-            var categories = await categoriesRepository.FindAll();
+            var categories = categoriesRepository.FindAll();
 
             var newsForm = new NewsForm
             {
@@ -115,7 +116,7 @@ namespace NEDAW.Controllers
 
         [Authorize(Roles = "User, Editor, Administrator")]
         [HttpPost]
-        public async Task<ActionResult> Save(NewsForm news)
+        public ActionResult Save(NewsForm news)
         {
             if (!ModelState.IsValid)
             {
@@ -140,12 +141,12 @@ namespace NEDAW.Controllers
                 newsModel.CreatedOn = DateTime.Now;
                 newsModel.UserId = newsModel.CreatedBy.ToString();
                 newsModel.ModifiedOn = newsModel.CreatedOn;
-                await _repository.Add(newsModel);
+                _repository.Add(newsModel);
             }
             else
             {
                 // Update News
-                var newsInDb = await _repository.FindById(news.Id);
+                var newsInDb = _repository.FindById(news.Id);
 
                 // Copy from VM
                 newsInDb.Title = news.Title;
@@ -155,15 +156,15 @@ namespace NEDAW.Controllers
                 newsInDb.UserId = User.Identity.GetUserId();
                 newsInDb.ModifiedOn = DateTime.Now;
 
-                await _repository.SaveChanges();
+                _repository.SaveChanges();
             }
 
             return RedirectToAction("Index", "News");
         }
 
-        public async Task<ActionResult> Category(int id, string sortByTitle, string sortByDate = "desc")
+        public ActionResult Category(int id, string sortByTitle, string sortByDate = "desc")
         {
-            var news = await _repository.Find(n => n.NewsCategoryId == id);
+            var news = _repository.Find(n => n.NewsCategoryId == id);
 
             var result = news.Include("User").Include("NewsCategory");
             news = result.Where(n => n.Status == "Approved");
@@ -192,7 +193,7 @@ namespace NEDAW.Controllers
 
 
             GlobalRepository<NewsCategory> _categoriesRepository = new GlobalRepository<NewsCategory>();
-            var categories = await _categoriesRepository.Find(c => c.Id == id);
+            var categories = _categoriesRepository.Find(c => c.Id == id);
 
             var titlu = categories.Select(c => c.Name).FirstOrDefault();
             ViewBag.Name = titlu;
@@ -206,9 +207,9 @@ namespace NEDAW.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Show(int id)
+        public ActionResult Show(int id)
         {
-            var result = await _repository.Find(n => n.Id == id);
+            var result = _repository.Find(n => n.Id == id);
             var news = result.FirstOrDefault();
 
             ViewBag.showButtons = false;
@@ -224,7 +225,7 @@ namespace NEDAW.Controllers
             var newResult = Mapper.Map<News, NewsDtoForUpdate>(news);
 
             var commentsRepository = new GlobalRepository<Comment>();
-            var comments = await commentsRepository.Find(c => c.NewsId == news.Id);
+            var comments = commentsRepository.Find(c => c.NewsId == news.Id);
 
             var newsForm = new NewsForm
             {
@@ -241,6 +242,36 @@ namespace NEDAW.Controllers
             };
 
             return View(newsForm);
+        }
+
+        public ActionResult Approve(int articleId)
+        {
+            var result = _repository.Find(n => n.Id == articleId);
+            var news = result.FirstOrDefault();
+            news.Status = "Approved";
+            _repository.SaveChanges();
+
+            return RedirectToAction("Pending");
+        }
+
+        public ActionResult Ignore(int articleId)
+        {
+            var result = _repository.Find(n => n.Id == articleId);
+            var news = result.FirstOrDefault();
+            news.Status = "Ignored";
+            _repository.SaveChanges();
+
+            return RedirectToAction("Pending");
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var result = _repository.Find(n => n.Id == id);
+            var news = result.FirstOrDefault();
+
+            _repository.Remove(news);
+
+            return RedirectToAction("Index");
         }
 
         private IEnumerable<SelectListItem> GetAllCategories(IEnumerable<NewsCategory> categories)

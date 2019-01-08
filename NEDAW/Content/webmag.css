@@ -362,6 +362,7 @@ RESPONSIVE
      background: #FFF;
      padding: 0px;
      font-weight: 600;
+     max-width: none;
 }
  .nav-btns .search-form .search-close {
      position: absolute;

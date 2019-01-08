@@ -27,8 +27,7 @@ namespace NEDAW
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css", 
-                      "~/Content/webmag.css"));
+                      "~/Content/site.css"));
         }
     }
 }

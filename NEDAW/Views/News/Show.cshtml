@@ -1,5 +1,4 @@
 ﻿@model NEDAW.ViewModels.NewsForm
-<br /><br /><br />
 <h2>@Model.Title</h2>
 
 
@@ -14,16 +13,21 @@
 
 @if (ViewBag.showButtons == true && Model.ModifiedBy.ToString() == ViewBag.currentUser || ViewBag.isAdmin == true)
 {
-    <form class="col-12">
+    <div class="col-12">
         <div class="form-row">
             <a class="btn btn-sm btn-info primary-button" href="/News/Edit/@Model.Id">Edit</a>
 
-            <form method="post" action="/News/Delete/@Model.Id">
+            @*<form method="post" action="/News/Delete/@Model.Id">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button class="primary-button btn btn-sm btn-danger" type="submit">Delete</button>
-            </form>
+            </form>*@
+            @using (Html.BeginForm("Delete", "News", routeValues: new { id = Model.Id }, method: FormMethod.Post, htmlAttributes: new { @class="section" }))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="primary-button btn btn-sm btn-danger" type="submit">Delete</button>
+            }
         </div>
-    </form>
+    </div>
 }
 
 @Html.Partial("~/Views/Comments/_CommentsSection.cshtml", new NEDAW.ViewModels.CommentsVM { NewsId = Model.Id, Comments = Model.Comments })

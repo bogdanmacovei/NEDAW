@@ -71,6 +71,8 @@ namespace NEDAW.Controllers
                 ViewMode = Enums.ViewMode.Edit
             };
 
+            ViewBag.CategoryId = result.Id;
+
             return View(newsCategoryForm);
         }
 
@@ -103,6 +105,16 @@ namespace NEDAW.Controllers
             }
 
             return RedirectToAction("Index", "Categories");
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Delete(int id)
+        {
+            var category = _repository.Find(c => c.Id == id).FirstOrDefault();
+            _repository.Remove(category);
+
+            return RedirectToAction("ManageCategories");
         }
 
         private void CreateNewCategoryContext(NewsCategory category) => _repository.Add(category);

@@ -36,6 +36,17 @@ namespace NEDAW.Controllers
                 var result = allNews.Where(n => n.Status == "Approved").OrderByDescending(n => n.ModifiedOn)
                     .Skip(pageSize * (pageNumber - 1)).Take(pageSize);
 
+                if (result.Count() == 0)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.Pages = (int) allNews.Where(n => n.Status == "Approved").Count() / pageSize + 1;
+                if (allNews.Where(n => n.Status == "Approved").Count() % pageSize == 0)
+                {
+                    ViewBag.Pages = ViewBag.Pages - 1;
+                }
+
                 var newsVM = new NewsVM
                 {
                     News = result
@@ -47,8 +58,22 @@ namespace NEDAW.Controllers
             else
             {
                 var selectedNews = _repository.FindAllInclude("NewsCategory", "User");
-                var result = selectedNews.Where(n => n.Status == "Approved" && (n.Title.ToLower().Contains(searchText.ToLower()) ||
-                    n.Content.ToLower().Contains(searchText.ToLower()))).OrderByDescending(n => n.ModifiedOn).Take(10);
+                var result = selectedNews.Where(n => n.Status == "Approved" && (n.Title.ToLower()
+                    .Contains(searchText.ToLower()) || n.Content.ToLower().Contains(searchText.ToLower())))
+                    .OrderByDescending(n => n.ModifiedOn)
+                    .Skip(pageSize * (pageNumber - 1))
+                    .Take(pageSize);
+
+                if (result.Count() == 0)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.Pages = (int) selectedNews.Where(n => n.Status == "Approved").Count() / pageSize + 1;
+                if (selectedNews.Where(n => n.Status == "Approved").Count() % pageSize == 0)
+                {
+                    ViewBag.Pages = ViewBag.Pages - 1;
+                }
 
                 var newsVM = new NewsVM
                 {
@@ -202,12 +227,18 @@ namespace NEDAW.Controllers
             var titlu = categories.Select(c => c.Name).FirstOrDefault();
             ViewBag.Name = titlu;
 
+            ViewBag.Pages = (int)news.Count() / pageSize + 1;
+            if (news.Count() % pageSize == 0)
+            {
+                ViewBag.Pages = ViewBag.Pages - 1;
+            }
+
             var newsVM = new NewsVM
             {
                 News = news
             };
 
-            return View(newsVM);
+            return View("Index", newsVM);
         }
 
         [AllowAnonymous]
@@ -229,7 +260,7 @@ namespace NEDAW.Controllers
             var newResult = Mapper.Map<News, NewsDtoForUpdate>(news);
 
             var commentsRepository = new GlobalRepository<Comment>();
-            var comments = commentsRepository.Find(c => c.NewsId == news.Id);
+            var comments = commentsRepository.Find(c => c.NewsId == news.Id).OrderByDescending(c => c.CreatedOn);
 
             var newsForm = new NewsForm
             {
@@ -247,7 +278,8 @@ namespace NEDAW.Controllers
 
             return View(newsForm);
         }
-
+        
+        [Authorize(Roles = "Editor, Administrator")]
         public ActionResult Approve(int articleId)
         {
             var result = _repository.Find(n => n.Id == articleId);
@@ -258,6 +290,7 @@ namespace NEDAW.Controllers
             return RedirectToAction("Pending");
         }
 
+        [Authorize(Roles = "Editor, Administrator")]
         public ActionResult Ignore(int articleId)
         {
             var result = _repository.Find(n => n.Id == articleId);
@@ -268,6 +301,7 @@ namespace NEDAW.Controllers
             return RedirectToAction("Pending");
         }
 
+        [Authorize(Roles = "Editor, Administrator")]
         public ActionResult Delete(int id)
         {
             var result = _repository.Find(n => n.Id == id);

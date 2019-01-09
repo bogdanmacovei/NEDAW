@@ -11,7 +11,7 @@
 
 <br />
 
-@if (ViewBag.showButtons == true && Model.ModifiedBy.ToString() == ViewBag.currentUser || ViewBag.isAdmin == true)
+@if (ViewBag.showButtons == true && Model.ModifiedBy.ToString() == ViewBag.currentUser || ViewBag.isAdmin == true || User.IsInRole("Editor"))
 {
     <div class="col-12">
         <div class="form-row">

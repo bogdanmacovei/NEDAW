@@ -11,7 +11,13 @@
         <br />
         @Html.ValidationMessageFor(c => c.Name)
     </div>
+
     @Html.HiddenFor(c => c.Id)
     @Html.AntiForgeryToken()
     <button class="primary-button" type="submit">Save</button>
 }
+<br />
+<a class="primary-button" href="#" onclick="document.getElementById('deleteForm').submit();">Delete</a>
+<form id="deleteForm" class="display-none" method="post" action="/Categories/Delete/@ViewBag.CategoryId">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+</form>

@@ -6,15 +6,44 @@
             <h5>@Model.User.UserName</h5>
             <span class="time">@Model.ModifiedOn</span>
 
-            @if (this.User.Identity.Name.ToString() == Model.User.UserName)
+            @if (this.User.Identity.Name.ToString() == Model.User.UserName || User.IsInRole("Administrator"))
             {
                 <a class="reply" href="#" onclick="document.getElementById('deleteForm').submit();">Delete</a>
 
                 <form id="deleteForm" class="display-none" method="post" action="/Comments/Delete/@Model.Id">
                     @Html.HttpMethodOverride(HttpVerbs.Delete)
                 </form>
+
+                <a style="cursor: pointer;" class="reply editcomm" id="editcomm-@Model.Id">Edit</a>
+                <div class="edit-@Model.Id"></div>
             }
         </div>
         <p>@Model.Message</p>
     </div>
 </div>
+
+<script>
+    $('.editcomm').click(function () {
+        id = $(this).attr('id').split('-')[1];
+
+        $('.edit-' + id).empty();
+        $('#fieldMessage').empty();
+
+        $('.edit-' + id).append(
+            `<input type="text" id="fieldMessage" /> 
+            <button class = "btn btn-success" id="btn">Edit</button>
+            <button class = "btn btn-danger" id="cancel">Cancel</button>`
+        )
+
+        $('#btn').click(function () {
+            text = $('#fieldMessage').val();
+
+            window.location.href = `/Comments/Edit/${id}?message=${text}`;
+        })
+
+        $('#cancel').click(function () {
+            $('.edit-' + id).empty();
+            $('#fieldMessage').empty();
+        })
+    });
+</script>

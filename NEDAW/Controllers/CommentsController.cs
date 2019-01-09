@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace NEDAW.Controllers
 {
+    [Authorize(Roles = "User, Editor, Administrator")]
     public class CommentsController : Controller
     {
         private readonly GlobalRepository<Comment> _repository;
@@ -44,7 +45,7 @@ namespace NEDAW.Controllers
             var entity = _repository.Find(m => m.Id == id);
             var news = entity.FirstOrDefault();
 
-            if (news.UserId != User.Identity.GetUserId())
+            if (news.UserId != User.Identity.GetUserId() && !User.IsInRole("Administrator"))
             {
                 return HttpNotFound();
             }
@@ -53,6 +54,21 @@ namespace NEDAW.Controllers
 
 
             return RedirectToAction("Show", "News", new { id = news.NewsId });
+        }
+
+        public ActionResult Edit(int id, string message)
+        {
+            var entity = _repository.Find(m => m.Id == id).FirstOrDefault();
+
+            if (entity.UserId != User.Identity.GetUserId() && !User.IsInRole("Administrator"))
+            {
+                return HttpNotFound();
+            }
+
+            entity.Message = message;
+            _repository.SaveChanges();
+
+            return RedirectToAction("Show", "News", new { id = entity.NewsId });
         }
 
         public ActionResult Save()

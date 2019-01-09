@@ -6,16 +6,15 @@
             <h5>@Model.User.UserName</h5>
             <span class="time">@Model.ModifiedOn</span>
 
-            @*<a href="#" class="reply">Edit</a>*@
+            @if (this.User.Identity.Name.ToString() == Model.User.UserName)
+            {
+                <a class="reply" href="#" onclick="document.getElementById('deleteForm').submit();">Delete</a>
+
+                <form id="deleteForm" class="display-none" method="post" action="/Comments/Delete/@Model.Id">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                </form>
+            }
         </div>
         <p>@Model.Message</p>
-        @if (this.User.Identity.Name.ToString() == Model.User.UserName)
-        {
-
-            <form method="post" action="/Comments/Delete/@Model.Id">
-                 @Html.HttpMethodOverride(HttpVerbs.Delete)
-                 <button class="primary-button btn btn-sm btn-danger" type="submit">Delete</button>
-            </form>
-         }
     </div>
 </div>

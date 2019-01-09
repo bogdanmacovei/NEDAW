@@ -26,7 +26,11 @@ namespace NEDAW.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            // var users = _context.Users.ToList();
+            return View();
+        }
+
+        public ActionResult Users()
+        {
             var users = _repository.FindAll();
             var usersVM = new UsersVM
             {

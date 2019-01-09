@@ -1,6 +1,5 @@
 ﻿@model NEDAW.Models.ApplicationUser
-<br /><br /><br />
-<h2>Editeaza utilizatorul @Model.UserName</h2>
+<h2>Edit user @Model.UserName</h2>
 
 <form method="post" action="/Admin/Edit/@Model.Id">
     @Html.HttpMethodOverride(HttpVerbs.Put)
@@ -8,27 +7,26 @@
     <br />
 
     <i class="glyphicon glyphicon-user"></i>
-    @Html.Label("UserName", "Nume utilizator", new { @class = "" })
+    @Html.Label("UserName", "User Name", new { @class = "" })
     <br />
 
     @Html.EditorFor(m => m.UserName)
     <br /><br />
 
     <i class="glyphicon glyphicon-envelope"></i>
-    @Html.Label("Email", "Email utilizator", new { @class = "" })
+    @Html.Label("Email", "Email", new { @class = "" })
     <br />
 
     @Html.EditorFor(m => m.Email)
     <br /><br />
 
     <i class="glyphicon glyphicon-th-list"></i>
-    <label>Selectati rolul</label>
+    <label>Role:</label>
     @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", 
         (string)ViewBag.userRole), null , new { @class = "form-control" })
     <br />
 
-    <button class="btn btn-sm btn-success" type="submit">
-        Modifica datele
-        utilizatorului
+    <button class="btn btn-sm btn-success primary-button" type="submit">
+        Save
     </button>
 </form>

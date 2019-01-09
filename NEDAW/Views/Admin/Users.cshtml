@@ -1,0 +1,12 @@
+﻿@model NEDAW.ViewModels.UsersVM
+<h2>Users</h2>
+
+@foreach (var user in Model.Users)
+{
+    <p><b>Nume:</b> @user.UserName</p>
+    <p><b>Email:</b> @user.Email</p>
+    <a class="btn btn-sm btn-success primary-button" href="/Admin/Edit/@user.Id">
+        Show
+    </a>
+    <hr />
+}

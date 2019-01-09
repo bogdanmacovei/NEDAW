@@ -25,6 +25,7 @@
                         <!-- nav -->
                         <ul class="nav-menu nav navbar-nav">
                             <li>@Html.ActionLink("News", "Index", "News")</li>
+                            <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
                             @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Editor"))
                             {
                                 <li>@Html.ActionLink("Pending", "Pending", "News")</li>
@@ -35,13 +36,13 @@
                             }
                             @if (Request.IsAuthenticated)
                             {
-                                <li>@Html.ActionLink("Manage", "Index", "Manage", routeValues: null, htmlAttributes: new { id = "manageLink" })</li>
-                                <li>@Html.ActionLink("Log Off", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
+                                <li class="cat-2">@Html.ActionLink("Manage", "Index", "Manage", routeValues: null, htmlAttributes: new { id = "manageLink" })</li>
+                                <li class="cat-2">@Html.ActionLink("Sign out", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                                <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                                <li class="cat-2">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                <li class="cat-2">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                             }
                         </ul>
                         <!-- /nav -->

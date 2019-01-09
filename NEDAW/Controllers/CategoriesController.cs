@@ -12,7 +12,6 @@ using NEDAW.Repository;
 
 namespace NEDAW.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly GlobalRepository<NewsCategory> _repository;
@@ -34,6 +33,19 @@ namespace NEDAW.Controllers
             return View(categoriesVM);
         }
 
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ManageCategories()
+        {
+            var categories = _repository.FindAll();
+            var categoriesVM = new NewsCategoryVM
+            {
+                NewsCategories = categories
+            };
+
+            return View(categoriesVM);
+        }
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
             var category = new NewsCategoryForm
@@ -43,6 +55,7 @@ namespace NEDAW.Controllers
             return View("Edit", category);
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
             var result = _repository.FindById(id);
@@ -62,6 +75,7 @@ namespace NEDAW.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Save(NewsCategory newsCategory)
         {
             if (!ModelState.IsValid)

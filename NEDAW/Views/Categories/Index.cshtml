@@ -1,12 +1,13 @@
 ﻿@model NEDAW.ViewModels.NewsCategoryVM
 
-<h2>All categories</h2>
-
-@foreach (var category in Model.NewsCategories)
-{
-    <p>@category.Name | 
-        <a href="/Categories/Edit/@category.Id">Edit category</a>
-    </p>
-}
-
-<a class="btn btn-sm btn-success" href="/Categories/New">New</a>
+<div class="secton-title">
+    <h2>Categories</h2>
+</div>
+<div class="section category-widget">
+    <ul>
+        @foreach (var category in Model.NewsCategories)
+        {
+            <li>@Html.ActionLink(category.Name, "Category", "News", new { id = category.Id }, new { @class = "cat-2" })</li>
+        }
+    </ul>
+</div>

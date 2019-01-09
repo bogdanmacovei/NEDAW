@@ -165,7 +165,8 @@ namespace NEDAW.Controllers
             return RedirectToAction("Index", "News");
         }
 
-        public ActionResult Category(int id, string sortByTitle, string sortByDate = "desc")
+        [AllowAnonymous]
+        public ActionResult Category(int id, string sortByTitle = "", string sortByDate = "desc")
         {
             var news = _repository.Find(n => n.NewsCategoryId == id);
 

@@ -37,3 +37,12 @@ textarea {
 .display-none {
     display: none;
 }
+
+select.form-control {
+    width: initial;
+}
+
+.my-6 {
+    margin-left: 6px;
+    margin-right: 6px;
+}

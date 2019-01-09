@@ -51,6 +51,15 @@ namespace NEDAW.Controllers
             return View(user);
         }
 
+        public ActionResult Delete(string id)
+        {
+            ApplicationUser user = _repository.FindById(id);
+
+            _repository.Remove(user);
+
+            return RedirectToAction("Users");
+        }
+
         [NonAction]
         public IEnumerable<SelectListItem> GetAllRoles()
         {

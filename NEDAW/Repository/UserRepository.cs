@@ -38,6 +38,12 @@ namespace NEDAW.Repository
             return _context.Roles;
         }
 
+        public void Remove(ApplicationUser entity)
+        {
+            _context.Users.Remove(entity);
+            SaveChanges();
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

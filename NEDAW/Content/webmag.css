@@ -138,6 +138,9 @@ RESPONSIVE
      -webkit-transition: 0.2s opacity;
      transition: 0.2s opacity;
 }
+ .fa.primary-button {
+     padding: 9px;
+ }
  .primary-button:hover,.primary-button:focus {
      color: #fff;
      opacity: 0.9;

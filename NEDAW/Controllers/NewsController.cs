@@ -14,7 +14,6 @@ using Microsoft.AspNet.Identity;
 
 namespace NEDAW.Controllers
 {
-    [Authorize(Roles = "User, Editor, Administrator")]
     public class NewsController : Controller
     {
         private readonly GlobalRepository<News> _repository;
@@ -238,9 +237,10 @@ namespace NEDAW.Controllers
                 News = news
             };
 
-            return View("Index", newsVM);
+            return View(newsVM);
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Show(int id)
         {
